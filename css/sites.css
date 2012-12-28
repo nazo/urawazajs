@@ -1,0 +1,17 @@
+h3 {
+    margin-top: 10px;
+}
+
+footer {
+    text-align: right;
+    margin-top: 15px;
+}
+
+#site-contents {
+    background-color: #FFF;
+    position:fixed;
+    width: 850px;
+    height: 396px;
+    border: 2px solid #456;
+    overflow: scroll;
+}
