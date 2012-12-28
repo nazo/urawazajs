@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+		<title>simple | nazo の Wii U 実験室</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="../css/basic.css" />
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/libwiiu.js"></script>
+		<script type="text/javascript" src="../js/libwiiu/scene.js"></script>
+		<script type="text/javascript" src="../js/libwiiu/sprite.js?3"></script>
+		<script type="text/javascript" src="../js/libwiiu/input.js"></script>
+	</head>
+	<body>
+		<div id="main-screen">
+			<div id="fps"></div>
+		</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+<!--
+
+$(function() {
+	var firstScene = new lwuScene();
+	firstScene.onInit = function() {
+		this.chr = this.spriteManager.load('curesexy.png');
+		this.x = 400;
+		this.y = 200;
+	};
+	firstScene.onFrame = function() {
+		this.stage.draw(this.chr, this.x, this.y);
+	};
+
+	var sm = new lwuSceneManager(firstScene);
+	sm.start();
+});
+
+-->
+</script>
+
