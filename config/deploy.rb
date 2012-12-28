@@ -11,6 +11,7 @@ role :app, "nazone.info"                          # This may be the same as your
 
 set :deploy_to, '/var/www/u.nazone.info/'
 default_run_options[:pty] = true
+set :keep_releases, 10
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
