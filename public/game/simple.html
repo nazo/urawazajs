@@ -7,9 +7,9 @@
 		<link rel="stylesheet" type="text/css" href="../css/basic.css" />
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/libwiiu.js"></script>
-		<script type="text/javascript" src="../js/libwiiu/scene.js"></script>
-		<script type="text/javascript" src="../js/libwiiu/sprite.js?3"></script>
-		<script type="text/javascript" src="../js/libwiiu/input.js"></script>
+		<script type="text/javascript" src="../js/libwiiu/scene.js?7"></script>
+		<script type="text/javascript" src="../js/libwiiu/sprite.js?7"></script>
+		<script type="text/javascript" src="../js/libwiiu/input.js?4"></script>
 	</head>
 	<body>
 		<div id="main-screen">
@@ -24,11 +24,24 @@
 $(function() {
 	var firstScene = new lwuScene();
 	firstScene.onInit = function() {
-		this.chr = this.spriteManager.load('curesexy.png');
+		this.chr = new lwuSprite('http://localhost/~sato/wiiusite/public/game/curesexy.png');
 		this.x = 400;
 		this.y = 200;
 	};
 	firstScene.onFrame = function() {
+		if (this.input.getKey(lwuInput.KEY_LEFT)) {
+			this.x -= 2;
+		}
+		if (this.input.getKey(lwuInput.KEY_RIGHT)) {
+			this.x += 2;
+		}
+		if (this.input.getKey(lwuInput.KEY_UP)) {
+			this.y -= 2;
+		}
+		if (this.input.getKey(lwuInput.KEY_DOWN)) {
+			this.y += 2;
+		}
+
 		this.stage.draw(this.chr, this.x, this.y);
 	};
 

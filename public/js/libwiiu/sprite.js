@@ -1,56 +1,78 @@
-var lwuSprite = function(context) {
-	this.context = context;
+var lwuSprite = function() {
+	this.canvas = document.createElement('canvas');
+	this.context = this.canvas.getContext('2d');
+	this.seed = +new Date();
+
+	if (arguments.length == 1) {
+		this.load(arguments[0]);
+	} else if (arguments.length == 2) {
+		this.create(arguments[0], arguments[1]);
+	}
+	return this;
 };
 
 lwuSprite.prototype = {
+	canvas: null,
 	context: null,
-
-	draw: function(sprite, x, y) {
-		this.context.putImageData(sprite.context, x, y);
-	}
-};
-
-var lwuSpriteManager = function(canvas) {
-	this.context = canvas;
-	this.seed = +new Date();
-};
-
-lwuSpriteManager.prototype = {
-	context: null,
+	width: null,
+	height: null,
 	seed: null,
 	timeout: 4,
+	load_start_time: null,
+
+	draw: function(sprite, x, y) {
+		var img = sprite.context.getImageData(0, 0, sprite.width, sprite.height);
+		this.context.putImageData(img, x, y);
+	},
+
+	clear: function() {
+		this.context.clearRect(0, 0, this.width, this.height);　
+	},
 
 	create: function(w, h) {
-		var s = new lwuSprite(this.context.createImageData(w, h));
-		return s;
+		this.canvas.style.width = w + 'px';
+		this.canvas.style.height = h + 'px';
+		this.canvas.width = w;
+		this.canvas.height = h;
+		this.width = w;
+		this.height = h;
+		return this;
 	},
 
 	load: function(url) {
 		var img = new Image();
-		img.src = url;
 		var self = this;
+		img.src = url;
 
-		self.imgLoaded = false;
-		var start_time = +new Date();
-		while(!self.imgLoaded) {
+		this.imgLoaded = false;
+		this.load_start_time = +new Date();
+
+		this.create(1, 1);
+
+		setTimeout(function(){self._onLoadProgress(img);}, 1);
+
+		return true;
+	},
+
+	_onLoadProgress: function(img) {
+		var self = this;
+		if (img.complete) {
+			this.imgLoaded = true;
+			this._onLoadComplete(img);
+		} else {
 			var end_time = +new Date();
-			if ((end_time - start_time) / 1000 > self.timeout) {
-				break;
-			}
-			if (img.complete) {
-				self.imgLoaded = true;
-				break;
+			if ((end_time - this.load_start_time) / 1000 < this.timeout) {
+				setTimeout(function(){self._onLoadProgress(img);}, 1);
 			}
 		}
+	},
 
-		if (!self.imgLoaded) {
-			return this.create(1, 1);
-		}
-
-		var s = this.create(img.width, img.height);
-		s.context.drawImage(img, 0, 0);
-
-		return s;
+	_onLoadComplete: function(img) {
+		this.width = img.width;
+		this.height = img.height;
+		this.create(img.width, img.height);
+		this.context.drawImage(img, 0, 0);
+		img = null;
 	}
 };
 

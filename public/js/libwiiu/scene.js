@@ -1,12 +1,12 @@
 var lwuScene = function() {
 };
 lwuScene.prototype = {
-	spriteManager: null,
 	stage: null,
+	input: null,
 
 	onFrame: function() {},
 	onInit: function() {},
-	onDispose: function() {}
+	onDestroy: function() {}
 };
 
 var lwuSceneManager = function(scene) {
@@ -19,10 +19,15 @@ lwuSceneManager.prototype = {
 	current_scene: null,
 	canvas: null,
 	stage: null,
-	spriteManager: null,
+	stages: [],
+	current_stage: 0,
+	mainscreen: null,
+	input: null,
 
 	runLoop: function() {
 		var start_time = +new Date();
+
+		this.input.onFrame();
 
 		this.current_scene.onFrame();
 
@@ -33,7 +38,15 @@ lwuSceneManager.prototype = {
 			this.last_fps = this.fps;
 		}
 
-		this.spriteManager.context.putImageData(this.stage.context, 0, 0);
+		var next_stage = 1 - this.current_stage;
+		this.mainscreen.appendChild(this.stages[this.current_stage].canvas);
+		this.mainscreen.removeChild(this.stages[next_stage].canvas);
+
+		this.stage = this.stages[next_stage];
+		this.stage.clear();
+
+		this.current_stage = next_stage;
+		this.current_scene.stage = this.stage;
 
 		$('#fps').text(this.last_fps + 'FPS');
 
@@ -48,19 +61,22 @@ lwuSceneManager.prototype = {
 			return;
 		}
 
-		var mainscreen = $('#main-screen');
-		this.canvas = document.createElement('canvas');
-		$(this.canvas).width(mainscreen.width());
-		$(this.canvas).height(mainscreen.height());
-		$(this.canvas).css('position', 'fixed');
-		mainscreen.append(this.canvas);
+		this.mainscreen = document.getElementById('main-screen');
+		var width = this.mainscreen.offsetWidth;
+		var height = this.mainscreen.offsetHeight;
 
-		this.spriteManager = new lwuSpriteManager(this.canvas.getContext('2d'));
-		this.stage = this.spriteManager.create(mainscreen.width(), mainscreen.height());
+		this.stages[0] = new lwuSprite(width, height);
+		this.stages[0].canvas.style.position = 'fixed';
+		this.stages[1] = new lwuSprite(width, height);
+		this.stages[1].canvas.style.position = 'fixed';
+		this.stage = this.stages[this.current_stage];
+		this.mainscreen.appendChild(this.stages[1 - this.current_stage].canvas);
 
-		this.current_scene.spriteManager = this.spriteManager;
 		this.current_scene.stage = this.stage;
 		this.current_scene.onInit();
+
+		this.input = new lwuInput();
+		this.current_scene.input = this.input;
 
 		var self = this;
 		setTimeout(function() { self.runLoop(); }, this.fps_timeout_sec);
