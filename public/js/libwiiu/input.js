@@ -3,6 +3,9 @@ var lwuInput = function() {
 	$(window).keydown(function(e) {
 		self.addKey(e.keyCode);
 	});
+	$(window).keyup(function(e) {
+		self.removeKey(e.keyCode);
+	});
 };
 
 lwuInput.KEY_UP = 1 << 1;
@@ -23,6 +26,21 @@ lwuInput.KEY_BUTTON10 = 1 << 14;
 lwuInput.prototype = {
 	buffer: null,
 	keyboard_buffer: null,
+
+	removeKey: function(code) {
+		if (code == 37) {
+			this.keyboard_buffer &= (~lwuInput.KEY_LEFT);
+		}
+		if (code == 38) {
+			this.keyboard_buffer &= (~lwuInput.KEY_UP);
+		}
+		if (code == 39) {
+			this.keyboard_buffer &= (~lwuInput.KEY_RIGHT);
+		}
+		if (code == 40) {
+			this.keyboard_buffer &= (~lwuInput.KEY_DOWN);
+		}
+	},
 
 	addKey: function(code) {
 		if (code == 37) {
@@ -51,13 +69,15 @@ lwuInput.prototype = {
 				if (window.wiiu.gamepad.isEnabled) {
 					if ((window.wiiu.gamepad.hold & 0x00000800) || (window.wiiu.gamepad.hold & 0x40000000)) {
 						buffer = buffer | lwuInput.KEY_LEFT;
-					} else if ((window.wiiu.gamepad.hold & 0x00000400) || (window.wiiu.gamepad.hold & 0x20000000)) {
+					}
+					if ((window.wiiu.gamepad.hold & 0x00000400) || (window.wiiu.gamepad.hold & 0x20000000)) {
 						buffer = buffer | lwuInput.KEY_RIGHT;
 					}
 
 					if ((window.wiiu.gamepad.hold & 0x00000200) || (window.wiiu.gamepad.hold & 0x10000000)) {
 						buffer = buffer | lwuInput.KEY_UP;
-					} else if ((window.wiiu.gamepad.hold & 0x00000100) || (window.wiiu.gamepad.hold & 0x08000000)) {
+					}
+					if ((window.wiiu.gamepad.hold & 0x00000100) || (window.wiiu.gamepad.hold & 0x08000000)) {
 						buffer = buffer | lwuInput.KEY_DOWN;
 					}
 
@@ -99,7 +119,6 @@ lwuInput.prototype = {
 		buffer |= this.keyboard_buffer;
 
 		this.buffer = buffer;
-		this.keyboard_buffer = 0;
 	}
 };
 
