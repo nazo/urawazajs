@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/libwiiu.js"></script>
 		<script type="text/javascript" src="../js/libwiiu/scene.js?7"></script>
-		<script type="text/javascript" src="../js/libwiiu/sprite.js?7"></script>
+		<script type="text/javascript" src="../js/libwiiu/image.js?7"></script>
 		<script type="text/javascript" src="../js/libwiiu/input.js?4"></script>
 	</head>
 	<body>
@@ -24,9 +24,13 @@
 $(function() {
 	var firstScene = new lwuScene();
 	firstScene.onInit = function() {
-		this.chr = new lwuSprite('curesexy.png');
+		this.chr = new lwuImage('curesexy.png');
+		this.shot = (new lwuImage(8,8)).box(0, 0, 8, 8, 'white');
 		this.x = 400;
 		this.y = 200;
+		this.shot_x = 0;
+		this.shot_y = 0;
+		this.shot_show = false;
 	};
 	firstScene.onFrame = function() {
 		if (this.input.getKey(lwuInput.KEY_LEFT)) {
@@ -41,8 +45,20 @@ $(function() {
 		if (this.input.getKey(lwuInput.KEY_DOWN)) {
 			this.y += 2;
 		}
+		if (this.input.getKey(lwuInput.KEY_BUTTON1)) {
+			this.shot_show = true;
+			this.shot_x = this.x;
+			this.shot_y = this.y;
+		}
 
 		this.stage.draw(this.chr, this.x, this.y);
+		if (this.shot_show) {
+			this.stage.draw(this.shot, this.shot_x, this.shot_y);
+			this.shot_x += 16;
+			if (this.shot_x > 854) {
+				this.shot_show = false;
+			}
+		}
 	};
 
 	var sm = new lwuSceneManager(firstScene);

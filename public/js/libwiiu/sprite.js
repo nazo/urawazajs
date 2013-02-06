@@ -1,78 +1,29 @@
 var lwuSprite = function() {
-	this.canvas = document.createElement('canvas');
-	this.context = this.canvas.getContext('2d');
-	this.seed = +new Date();
-
-	if (arguments.length == 1) {
-		this.load(arguments[0]);
-	} else if (arguments.length == 2) {
-		this.create(arguments[0], arguments[1]);
-	}
 	return this;
 };
 
 lwuSprite.prototype = {
-	canvas: null,
-	context: null,
-	width: null,
-	height: null,
-	seed: null,
-	timeout: 4,
-	load_start_time: null,
+	image: null,
+	image_x: 0,
+	image_y: 0,
+	image_w: 0,
+	image_h: 0,
 
-	draw: function(sprite, x, y) {
-		var img = sprite.context.getImageData(0, 0, sprite.width, sprite.height);
-		this.context.putImageData(img, x, y);
+	register: function(image, x, y, w, h) {
+		this.image = image;
+		this.image_x = x;
+		this.image_y = y;
+		this.image_w = w;
+		this.image_h = h;
 	},
 
-	clear: function() {
-		this.context.clearRect(0, 0, this.width, this.height);　
+	square: function(size) {
+		this.image = new lwuImage(size, size);
 	},
 
-	create: function(w, h) {
-		this.canvas.style.width = w + 'px';
-		this.canvas.style.height = h + 'px';
-		this.canvas.width = w;
-		this.canvas.height = h;
-		this.width = w;
-		this.height = h;
-		return this;
-	},
-
-	load: function(url) {
-		var img = new Image();
-		var self = this;
-		img.src = url;
-
-		this.imgLoaded = false;
-		this.load_start_time = +new Date();
-
-		this.create(1, 1);
-
-		setTimeout(function(){self._onLoadProgress(img);}, 1);
-
-		return true;
-	},
-
-	_onLoadProgress: function(img) {
-		var self = this;
-		if (img.complete) {
-			this.imgLoaded = true;
-			this._onLoadComplete(img);
-		} else {
-			var end_time = +new Date();
-			if ((end_time - this.load_start_time) / 1000 < this.timeout) {
-				setTimeout(function(){self._onLoadProgress(img);}, 1);
-			}
-		}
-	},
-
-	_onLoadComplete: function(img) {
-		this.width = img.width;
-		this.height = img.height;
-		this.create(img.width, img.height);
-		this.context.drawImage(img, 0, 0);
-		img = null;
+	circle: function(size) {
+		this.image = new lwuImage(size, size);
 	}
+
 };
 

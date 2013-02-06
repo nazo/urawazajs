@@ -26,34 +26,26 @@ lwuInput.KEY_BUTTON10 = 1 << 14;
 lwuInput.prototype = {
 	buffer: null,
 	keyboard_buffer: null,
+	keyboard_map: {
+		37: lwuInput.KEY_LEFT,
+		38: lwuInput.KEY_UP,
+		39: lwuInput.KEY_RIGHT,
+		40: lwuInput.KEY_DOWN,
+		68: lwuInput.KEY_BUTTON1,
+		88: lwuInput.KEY_BUTTON2,
+		83: lwuInput.KEY_BUTTON3,
+		65: lwuInput.KEY_BUTTON4
+	},
 
 	removeKey: function(code) {
-		if (code == 37) {
-			this.keyboard_buffer &= (~lwuInput.KEY_LEFT);
-		}
-		if (code == 38) {
-			this.keyboard_buffer &= (~lwuInput.KEY_UP);
-		}
-		if (code == 39) {
-			this.keyboard_buffer &= (~lwuInput.KEY_RIGHT);
-		}
-		if (code == 40) {
-			this.keyboard_buffer &= (~lwuInput.KEY_DOWN);
+		if (code in this.keyboard_map) {
+			this.keyboard_buffer &= (~this.keyboard_map[code]);
 		}
 	},
 
 	addKey: function(code) {
-		if (code == 37) {
-			this.keyboard_buffer |= lwuInput.KEY_LEFT;
-		}
-		if (code == 38) {
-			this.keyboard_buffer |= lwuInput.KEY_UP;
-		}
-		if (code == 39) {
-			this.keyboard_buffer |= lwuInput.KEY_RIGHT;
-		}
-		if (code == 40) {
-			this.keyboard_buffer |= lwuInput.KEY_DOWN;
+		if (code in this.keyboard_map) {
+			this.keyboard_buffer |= this.keyboard_map[code];
 		}
 	},
 

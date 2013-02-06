@@ -65,9 +65,9 @@ lwuSceneManager.prototype = {
 		var width = this.mainscreen.offsetWidth;
 		var height = this.mainscreen.offsetHeight;
 
-		this.stages[0] = new lwuSprite(width, height);
+		this.stages[0] = new lwuImage(width, height);
 		this.stages[0].canvas.style.position = 'fixed';
-		this.stages[1] = new lwuSprite(width, height);
+		this.stages[1] = new lwuImage(width, height);
 		this.stages[1].canvas.style.position = 'fixed';
 		this.stage = this.stages[this.current_stage];
 		this.mainscreen.appendChild(this.stages[1 - this.current_stage].canvas);
