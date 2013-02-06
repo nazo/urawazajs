@@ -8,6 +8,21 @@ lwuSprite.prototype = {
 	image_y: 0,
 	image_w: 0,
 	image_h: 0,
+	x: 0,
+	y: 0,
+
+	hitRect: function(target) {
+		if ((target.x <= (this.x + this.image_w)) && (this.x <= (target.x + target.image_w))) {
+			if ((target.y <= (this.y + this.image_h)) && (this.y <= (target.y + target.image_h))) {
+				return true;
+			}
+		}
+		return false;
+	},
+
+	drawTo: function(dst) {
+		dst.draw(this.image, this.x, this.y);
+	},
 
 	register: function(image, x, y, w, h) {
 		this.image = image;

@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="../js/libwiiu/scene.js?7"></script>
 		<script type="text/javascript" src="../js/libwiiu/image.js?7"></script>
 		<script type="text/javascript" src="../js/libwiiu/input.js?4"></script>
+		<script type="text/javascript" src="../js/libwiiu/sprite.js?4"></script>
 	</head>
 	<body>
 		<div id="main-screen">
@@ -24,39 +25,54 @@
 $(function() {
 	var firstScene = new lwuScene();
 	firstScene.onInit = function() {
-		this.chr = new lwuImage('curesexy.png');
-		this.shot = (new lwuImage(8,8)).box(0, 0, 8, 8, 'white');
-		this.x = 400;
-		this.y = 200;
-		this.shot_x = 0;
-		this.shot_y = 0;
+		this.chr = new lwuSprite();
+		this.chr.register(new lwuImage('curesexy.png'), 0, 0, 64, 64);
+		this.enemy = new lwuSprite();
+		this.enemy.register(new lwuImage('curesexy.png'), 0, 0, 64, 64);
+		this.shot = new lwuSprite();
+		this.shot.register( (new lwuImage(8,8)).box(0, 0, 8, 8, 'white'), 0, 0, 8, 8);
+		this.chr.x = 300;
+		this.chr.y = 200;
+		this.shot.x = 0;
+		this.shot.y = 0;
+		this.enemy.x = 700;
+		this.enemy.y = 200;
 		this.shot_show = false;
+		this.enemy_live = true;
 	};
 	firstScene.onFrame = function() {
 		if (this.input.getKey(lwuInput.KEY_LEFT)) {
-			this.x -= 2;
+			this.chr.x -= 2;
 		}
 		if (this.input.getKey(lwuInput.KEY_RIGHT)) {
-			this.x += 2;
+			this.chr.x += 2;
 		}
 		if (this.input.getKey(lwuInput.KEY_UP)) {
-			this.y -= 2;
+			this.chr.y -= 2;
 		}
 		if (this.input.getKey(lwuInput.KEY_DOWN)) {
-			this.y += 2;
+			this.chr.y += 2;
 		}
 		if (this.input.getKey(lwuInput.KEY_BUTTON1)) {
-			this.shot_show = true;
-			this.shot_x = this.x;
-			this.shot_y = this.y;
+			if (!this.shot_show) {
+				this.shot_show = true;
+				this.shot.x = this.chr.x;
+				this.shot.y = this.chr.y;
+			}
 		}
 
-		this.stage.draw(this.chr, this.x, this.y);
+		this.chr.drawTo(this.stage);
+		if (this.enemy_live) {
+			this.enemy.drawTo(this.stage);
+		}
 		if (this.shot_show) {
-			this.stage.draw(this.shot, this.shot_x, this.shot_y);
-			this.shot_x += 16;
-			if (this.shot_x > 854) {
+			this.shot.drawTo(this.stage);
+			this.shot.x += 16;
+			if (this.shot.x > 854) {
 				this.shot_show = false;
+			}
+			if (this.shot.hitRect(this.enemy)) {
+				this.enemy_live = false;
 			}
 		}
 	};
