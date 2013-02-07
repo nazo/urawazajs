@@ -2,15 +2,15 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
-		<title>simple | nazo の HTML5ゲームライブラリ実験室</title>
+		<title>animation | nazo の HTML5ゲームライブラリ実験室</title>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" type="text/css" href="../css/basic.css" />
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/libwiiu.js"></script>
-		<script type="text/javascript" src="../js/libwiiu/scene.js?8"></script>
-		<script type="text/javascript" src="../js/libwiiu/image.js?8"></script>
-		<script type="text/javascript" src="../js/libwiiu/input.js?7"></script>
-		<script type="text/javascript" src="../js/libwiiu/sprite.js?6"></script>
+		<script type="text/javascript" src="../js/libwiiu/scene.js?9"></script>
+		<script type="text/javascript" src="../js/libwiiu/image.js?10"></script>
+		<script type="text/javascript" src="../js/libwiiu/input.js?8"></script>
+		<script type="text/javascript" src="../js/libwiiu/sprite.js?11"></script>
 	</head>
 	<body>
 		<div id="main-screen">
@@ -28,7 +28,11 @@ $(function() {
 		this.chr = new lwuSprite();
 		this.chr.register(new lwuImage('curesexy.png'), 0, 0, 64, 64);
 		this.enemy = new lwuSprite();
-		this.enemy.register(new lwuImage('curesexy.png'), 0, 0, 64, 64);
+		this.enemy.register(new lwuImage('sprite.png'), 0, 0, 16, 16);
+		this.enemy.addAnimation(16*1, 0, 16, 16, 5);
+		this.enemy.addAnimation(16*2, 0, 16, 16, 5);
+		this.enemy.addAnimation(16*3, 0, 16, 16, 8);
+		this.enemy.addAnimation(16*4, 0, 16, 16, 7);
 		this.shot = new lwuSprite();
 		this.shot.register( (new lwuImage(8,8)).box(0, 0, 8, 8, 'white'), 0, 0, 8, 8);
 		this.chr.x = 300;
