@@ -1,11 +1,11 @@
-var lwuSprite = (function() {
-	function lwuSprite() {
+UrawazaJS.Sprite = (function() {
+	function Sprite() {
 		this._frames = [];
 
 		return this;
 	}
 
-	lwuSprite.prototype = {
+	Sprite.prototype = {
 		image: null,
 		image_x: 0,
 		image_y: 0,
@@ -64,7 +64,7 @@ var lwuSprite = (function() {
 		},
 
 		square: function(size) {
-			this.image = new lwuImage(size, size);
+			this.image = new UrawazaJS.Image(size, size);
 			this.image_x = 0;
 			this.image_y = 0;
 			this.image_w = size;
@@ -72,7 +72,7 @@ var lwuSprite = (function() {
 		},
 
 		circle: function(size) {
-			this.image = new lwuImage(size, size);
+			this.image = new UrawazaJS.Image(size, size);
 			this.image_x = 0;
 			this.image_y = 0;
 			this.image_w = size;
@@ -81,6 +81,6 @@ var lwuSprite = (function() {
 
 	};
 
-	return lwuSprite;
+	return Sprite;
 })();
 

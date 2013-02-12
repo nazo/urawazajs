@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
+		<title>scene | nazo の HTML5ゲームライブラリ実験室</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="../css/basic.css" />
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/libwiiu.js"></script>
+		<script type="text/javascript" src="../js/libwiiu/scene.js?9"></script>
+		<script type="text/javascript" src="../js/libwiiu/image.js?10"></script>
+		<script type="text/javascript" src="../js/libwiiu/input.js?8"></script>
+		<script type="text/javascript" src="../js/libwiiu/sprite.js?11"></script>
+	</head>
+	<body>
+		<div id="main-screen">
+			<div id="fps"></div>
+		</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+<!--
+
+$(function() {
+	var sm = new U.SceneManager();
+
+	sm.create('firstScene', {
+		onInit: function() {
+			this.chr = new U.Sprite();
+			this.chr.register(new U.Image('curesexy.png'), 0, 0, 64, 64);
+			this.enemy = new U.Sprite();
+			this.enemy.register(new U.Image('sprite.png'), 0, 0, 16, 16);
+			this.enemy.addAnimation(16*1, 0, 16, 16, 5);
+			this.enemy.addAnimation(16*2, 0, 16, 16, 5);
+			this.enemy.addAnimation(16*3, 0, 16, 16, 8);
+			this.enemy.addAnimation(16*4, 0, 16, 16, 7);
+			this.shot = new U.Sprite();
+			this.shot.register( (new U.Image(8,8)).box(0, 0, 8, 8, 'white'), 0, 0, 8, 8);
+			this.chr.x = 300;
+			this.chr.y = 200;
+			this.shot.x = 0;
+			this.shot.y = 0;
+			this.enemy.x = 700;
+			this.enemy.y = 200;
+			this.shot_show = false;
+			this.enemy_live = true;
+		},
+		onFrame: function() {
+			if (this.input.getKey(U.Input.KEY_LEFT)) {
+				this.chr.x -= 2;
+			}
+			if (this.input.getKey(U.Input.KEY_RIGHT)) {
+				this.chr.x += 2;
+			}
+			if (this.input.getKey(U.Input.KEY_UP)) {
+				this.chr.y -= 2;
+			}
+			if (this.input.getKey(U.Input.KEY_DOWN)) {
+				this.chr.y += 2;
+			}
+			if (this.input.getKey(U.Input.KEY_BUTTON1)) {
+				if (!this.shot_show) {
+					this.shot_show = true;
+					this.shot.x = this.chr.x;
+					this.shot.y = this.chr.y;
+				}
+			}
+
+			this.chr.drawTo(this.stage);
+			if (this.enemy_live) {
+				this.enemy.drawTo(this.stage);
+			}
+			if (this.shot_show) {
+				this.shot.drawTo(this.stage);
+				this.shot.x += 16;
+				if (this.shot.x > 854) {
+					this.shot_show = false;
+				}
+				if (this.shot.hitRect(this.enemy)) {
+					this.enemy_live = false;
+				}
+			}
+		}
+	});
+
+	sm.start('firstScene');
+});
+
+-->
+</script>
+
+

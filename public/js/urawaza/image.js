@@ -1,5 +1,5 @@
-var lwuImage = (function() {
-	function lwuImage() {
+UrawazaJS.Image = (function() {
+	function Image() {
 		this.canvas = document.createElement('canvas');
 		this.context = this.canvas.getContext('2d');
 		this.seed = +new Date();
@@ -12,7 +12,7 @@ var lwuImage = (function() {
 		return this;
 	}
 
-	lwuImage.prototype = {
+	Image.prototype = {
 		canvas: null,
 		context: null,
 		width: null,
@@ -54,6 +54,11 @@ var lwuImage = (function() {
 			return this;
 		},
 
+		text: function(x, y, text) {
+			this.context.beginPath();
+			this.context.fillText(text, x, y);
+		},
+
 		clear: function() {
 			this.context.clearRect(0, 0, this.width, this.height);　
 			return this;
@@ -70,7 +75,7 @@ var lwuImage = (function() {
 		},
 
 		load: function(url) {
-			var img = new Image();
+			var img = new window.Image();
 			var self = this;
 			img.src = url;
 
@@ -108,6 +113,6 @@ var lwuImage = (function() {
 		}
 	};
 
-	return lwuImage;
+	return Image;
 })();
 

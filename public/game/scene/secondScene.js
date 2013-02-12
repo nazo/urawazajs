@@ -1,30 +1,5 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
-		<title>animation | nazo の HTML5ゲームライブラリ実験室</title>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" type="text/css" href="../css/basic.css" />
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-		<script type="text/javascript" src="../js/libwiiu.js"></script>
-		<script type="text/javascript" src="../js/libwiiu/scene.js?9"></script>
-		<script type="text/javascript" src="../js/libwiiu/image.js?10"></script>
-		<script type="text/javascript" src="../js/libwiiu/input.js?8"></script>
-		<script type="text/javascript" src="../js/libwiiu/sprite.js?11"></script>
-	</head>
-	<body>
-		<div id="main-screen">
-			<div id="fps"></div>
-		</div>
-	</body>
-</html>
-
-<script type="text/javascript">
-<!--
-
-$(function() {
-	var firstScene = new lwuScene();
-	firstScene.onInit = function() {
+sm.create('secondScene', {
+	onInit: function() {
 		this.chr = new lwuSprite();
 		this.chr.register(new lwuImage('curesexy.png'), 0, 0, 64, 64);
 		this.enemy = new lwuSprite();
@@ -43,8 +18,8 @@ $(function() {
 		this.enemy.y = 200;
 		this.shot_show = false;
 		this.enemy_live = true;
-	};
-	firstScene.onFrame = function() {
+	},
+	onFrame: function() {
 		if (this.input.getKey(lwuInput.KEY_LEFT)) {
 			this.chr.x -= 2;
 		}
@@ -79,12 +54,6 @@ $(function() {
 				this.enemy_live = false;
 			}
 		}
-	};
-
-	var sm = new lwuSceneManager();
-	sm.start(firstScene);
+	}
 });
-
--->
-</script>
 

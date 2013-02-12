@@ -1,8 +1,5 @@
-wiiusite
+urawaza.js
 ========
-
-This repository will be renamed.
-(I was going to make game library on Wii U© Internet Browser.)
 
 About
 --------
